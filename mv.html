@@ -8,13 +8,13 @@
  */
 
 window.onload = function() {
-    var uri = getParameterByName("uri", window.location.search);
-    if (uri) {
-        updateMarkup(uri);
+    var markup = getParameterByName("markup", window.location.search);
+    if (markup) {
+        updateMarkup(markup);
     } else {
         document.getElementById("markup").innerHTML
-            = "Please specify 'uri' like below.<br>"
-            + "<code>mv.html?uri=&lturi-of-a-markup-file&gt<code>";
+            = "Please specify 'markup' like below.<br>"
+            + "<code>mv.html?markup=&lturi-of-a-markup-file&gt<code>";
     }
 };
 
@@ -39,6 +39,8 @@ function updateMarkup(uri) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             document.getElementById("markup").innerHTML = xhr.responseText;
             renderCommonmark();
+            replaceLink("md");
+            jumpToHashtag();
         }
     };
     xhr.open("GET", uri, true);
@@ -54,7 +56,6 @@ function renderCommonmark() {
     var parsed = reader.parse(document.getElementById("markup").innerHTML);
     var writer = new commonmark.HtmlRenderer();
     document.getElementById("markup").innerHTML = writer.render(parsed);
-    replaceLink("md");
 }
 
 /**
@@ -67,11 +68,20 @@ function replaceLink(extension) {
         if (RegExp("\." + extension + "$").exec(l.pathname)) {
             l.onclick = function() {
                 updateMarkup(l.href);
-                history.pushState(null, document.title, "?uri=" + l.href);
+                history.pushState(null, document.title, "?markup=" + l.href);
                 return false;
             };
         }
     });
+}
+
+/**
+ * Just jump to hashtag of current address bar
+ */
+function jumpToHashtag() {
+    var hashtag = location.hash;
+    location.hash = "";
+    location.hash = hashtag;
 }
 
 </script>
