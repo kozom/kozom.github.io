@@ -1,11 +1,4 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>Markup Vewer</title>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
+<!DOCTYPE html>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/commonmark/0.27.0/commonmark.min.js"></script>
 <script>
@@ -21,7 +14,7 @@ window.onload = function() {
     } else {
         document.getElementById("markup").innerHTML
             = "Please specify 'uri' like below.<br>"
-            + "<code>markup-viewer.html?uri=&lturi-of-a-markup-file&gt<code>";
+            + "<code>mv.html?uri=&lturi-of-a-markup-file&gt<code>";
     }
 };
 
@@ -74,7 +67,7 @@ function replaceLink(extension) {
         if (RegExp("\." + extension + "$").exec(l.pathname)) {
             l.onclick = function() {
                 updateMarkup(l.href);
-                history.pushState(null, document.title, l.href);
+                history.pushState(null, document.title, "?uri=" + l.href);
                 return false;
             };
         }
@@ -82,8 +75,4 @@ function replaceLink(extension) {
 }
 
 </script>
-</head>
-<body>
 <div id="markup">Loading...</div>
-</body>
-</html>
