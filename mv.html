@@ -13,8 +13,9 @@ window.onload = function() {
         updateMarkup(markup);
     } else {
         document.getElementById("markup").innerHTML
-            = "Please specify 'markup' like below.<br>"
-            + "<code>mv.html?markup=&lturi-of-a-markup-file&gt<code>";
+            = "Please specify 'markup' query like below.<br><code>"
+            + window.location.origin + window.location.pathname
+            + "?markup=&lturi-of-a-markup-file&gt</code>";
     }
 };
 
@@ -67,8 +68,10 @@ function replaceLink(extension) {
     Array.prototype.forEach.call(links, function(l) {
         if (RegExp("\." + extension + "$").exec(l.pathname)) {
             l.onclick = function() {
-                updateMarkup(l.href);
-                history.pushState(null, document.title, "?markup=" + l.href);
+                var href = (RegExp(l.origin).exec(l.href))
+                    ? l.pathname + l.search + l.hash: l.href;
+                updateMarkup(href);
+                history.pushState(null, document.title, "?markup=" + href);
                 return false;
             };
         }
